@@ -1,0 +1,51 @@
+﻿@page "/typeaheaddemo"
+
+@using BlazoredExamples.Data
+
+<h3>Type Ahead dmeo</h3>
+
+<BlazoredTypeahead SearchMethod="AutoSearch" @bind-Value="SelectedCar">
+    <SelectedTemplate>
+        @context.CarName
+    </SelectedTemplate>
+    <ResultTemplate>
+        @context.CarName @context.Year
+    </ResultTemplate>
+</BlazoredTypeahead>
+
+@code {
+    private List<Car> cars;
+    private Car SelectedCar;
+
+    protected override void OnInitialized()
+    {
+        cars = new List<Car>
+        {
+            new Car
+            {
+                CarName = "Ford F-150",
+                Year = 2020
+            },
+            new Car
+            {
+                CarName = "Chevy Silverado",
+                Year = 2020
+            },
+            new Car
+            {
+                CarName = "Telsa Cyber Truck",
+                Year = 2020
+            },
+            new Car
+            {
+                CarName = "Toyota Tacoma",
+                Year = 2020
+            }
+        };
+    }
+
+    private async Task<IEnumerable<Car>> AutoSearch(string searchCar)
+    {
+        return await Task.FromResult(cars.Where(c => c.CarName.ToLower().Contains(searchCar.ToLower())).ToList());
+    }
+}
